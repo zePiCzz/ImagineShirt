@@ -16,14 +16,4 @@ class Users extends Model
     {
         return $this->hasOne(Customers::class, 'id', 'id');
     }
-
-    public function create()
-    {
-        return view('cursos.create');
-    }
-    public function store(Request $request): RedirectResponse
-    {
-        Curso::create($request->all());
-        return redirect('/cursos');
-    }
 }
