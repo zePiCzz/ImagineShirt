@@ -14,7 +14,7 @@ class Order_items extends Model
 
     public function orders()
     {
-        return $this->hasOne(orders::class, 'order_id', 'id');
+        return $this->hasOne(orders::class, 'id');
     }
 
     public function colors()
@@ -22,8 +22,8 @@ class Order_items extends Model
         return $this->hasOne(colors::class,'color_code','code');
     }
 
-    public function tshirt_images()
+    public function tshirtImage()
     {
-        return $this->hasOne(tshirt_images::class,'tshirt_image','id');
+        return $this->hasOne(tshirt_images::class,'id');
     }
 }

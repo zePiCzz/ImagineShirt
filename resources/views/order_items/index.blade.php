@@ -16,17 +16,15 @@
         <tbody>
             @foreach ($order_items as $order_item)
                 <tr>
-                    <td> <img src="{{ $order_item->tshirt_image_url ? asset('storage/tshirt_images/' . $order_item->tshirt_image_url) : asset('img/default_img.png') }}"alt="Foto da TShirt" style="width:80px;height:80px"> </td>
+                    <td> <img src="{{ $order_item->url_imagem ? asset('storage/tshirt_images/' . $order_item->url_imagem) : asset('img/default_img.png') }}"alt="Foto da TShirt" style="width:80px;height:80px"> </td>
                     <td>{{$order_item->color_code}}</td>
                     <td>{{$order_item->size}}</td>
                     <td>{{$order_item->qty}}</td>
                     <td>{{$order_item->unit_price}}</td>
                     <td>{{$order_item->sub_total}}</td>
-                    <td>
-                        <div class="dropdown show">
-                          </div>
-                    </td>
+                    <td>{{$order_item->order->status}}</td>
                 </tr>
+
             @endforeach
         </tbody>
     </table>
