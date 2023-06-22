@@ -11,7 +11,6 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarrinhoController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,9 +51,9 @@ Route::get('users/{user}',  [UsersController::class, 'show'])->name('users.show'
 
 //Carrinho
 Route::get('carrinho',  [CarrinhoController::class, 'index'])->name('carrinho.index');
-Route::post('carrinho/{order_item}',  [CarrinhoController::class, 'add'])->name('carrinho.add');
+Route::post('carrinho/adicionar', [CarrinhoController::class, 'index'])->name('carrinho.adicionar');
 Route::delete('carrinho/{order_item}',  [CarrinhoController::class, 'remove'])->name('carrinho.remove');
-Route::get('carrinho' , [CarrinhoController::class, 'store'])->name('carrinho.store');
+Route::post('carrinho' , [CarrinhoController::class, 'store'])->name('carrinho.store');
 Route::delete('carrinho' , [CarrinhoController::class, 'destroy'])->name('carrinho.destroy');
 
 

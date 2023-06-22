@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tshirt_images;
+use App\Models\Colors;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tshirt_imagesPost;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +14,9 @@ class Tshirt_imagesController extends Controller
     public function index()
     {
         $tshirt_image = Tshirt_images::paginate(5);
+        $cores = Colors::all();
         //dd($tshirt_image);
-        return view('tshirt_images.index')->with('tshirt_images', $tshirt_image);
+        return view('tshirt_images.index')->with('tshirt_images', $tshirt_image)->with('cores',$cores);
     }
 
     public function update(Tshirt_imagesPost $request, Tshirt_images $tshirt_image)
