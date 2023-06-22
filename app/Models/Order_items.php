@@ -14,16 +14,16 @@ class Order_items extends Model
 
     public function orders()
     {
-        return $this->hasOne(orders::class, 'id');
+        return $this->hasOne(orders::class, 'id', 'order_id');
     }
 
     public function colors()
     {
-        return $this->hasOne(colors::class,'color_code','code');
+        return $this->hasOne(colors::class, 'code', 'color_code');
     }
 
     public function tshirtImage()
     {
-        return $this->hasOne(tshirt_images::class,'id');
+        return $this->hasOne(tshirt_images::class,'id','tshirt_image_id');
     }
 }

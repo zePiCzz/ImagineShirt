@@ -11,13 +11,23 @@ class Order_itemsController extends Controller
 {
     public function index()
     {
-        $order_items = Order_items::paginate(10);
+        $order_items = Order_items::with('tshirtImage')->with('orders')->with('colors')->paginate(10);
+
 
         foreach ($order_items as $order_item) {
             $url_imagem = $order_item->tshirtImage->image_url;
             $order_item->url_imagem = $url_imagem;
-            $order = $order_item->orders;
+        }
+
+        foreach ($order_items as $order_item) {
+
+            $order = $order_item->orders->status;
             $order_item->order = $order;
+        }
+
+        foreach ($order_items as $order_item) {
+            $color = $order_item->colors->name;
+            $order_item->color = $color;
         }
 
         //enviar o $url_imagem para a view

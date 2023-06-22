@@ -17,12 +17,17 @@
             @foreach ($order_items as $order_item)
                 <tr>
                     <td> <img src="{{ $order_item->url_imagem ? asset('storage/tshirt_images/' . $order_item->url_imagem) : asset('img/default_img.png') }}"alt="Foto da TShirt" style="width:80px;height:80px"> </td>
-                    <td>{{$order_item->color_code}}</td>
+                    @if ($order_item->color == null)
+                        <td>Cor não definida</td>
+                        @else
+                        <td>{{$order_item->color}}</td>
+                    @endif
+
                     <td>{{$order_item->size}}</td>
                     <td>{{$order_item->qty}}</td>
                     <td>{{$order_item->unit_price}}</td>
                     <td>{{$order_item->sub_total}}</td>
-                    <td>{{$order_item->order->status}}</td>
+                    <td>{{$order_item->order}}</td>
                 </tr>
 
             @endforeach
