@@ -40,7 +40,9 @@
                         <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
                         <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
                         @else
-                        <li><a class="dropdown-item" >User: {{Auth::user()->name}} </a></li>
+                        <li><a class="dropdown-item" >{{Auth::user()->name}} </a></li>
+                        <li><a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">Profile </a></li>
+                        <li><a class="dropdown-item" href="{{ route('users.edit', Auth::user()) }}">Edit </a></li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
@@ -133,6 +135,5 @@
 </body>
 
 </html>
-
 
 

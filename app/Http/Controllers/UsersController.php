@@ -40,18 +40,22 @@ class UsersController extends Controller
 
     public function update(Request $request, Users $user)
     {
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
 
-        if ($request->hasFile('password')) {
-            $path = $request->password->store('storage/users/');
-            $user->password = basename($path);
+        // Check if a new photo is uploaded
+        if ($request->hasFile('photo')) {
+            // Store the new photo
+            $photoPath = $request->file('photo')->store('public/photos');
+
+            // Update the photo URL in the user model
+            $user->photo_url = str_replace('public/', '', $photoPath);
         }
+
         $user->save();
 
-        return redirect()->route('users.index')
-            ->with('alert-msg', 'user "' . $user->name . '" foi alterado com sucesso!')
-            ->with('alert-type', 'success');
+        return redirect()->route('users.show', $user);
     }
 
     public function destroy(Users $user)
