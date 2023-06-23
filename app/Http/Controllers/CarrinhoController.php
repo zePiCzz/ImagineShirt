@@ -5,40 +5,65 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order_items;
 use App\Models\Colors;
+use App\Models\Tshirt_images;
+use App\Models\Orders;
 
 class CarrinhoController extends Controller
 {
-    public function index(){
-        $carrinho = session('carrinho', []);
-        return view('carrinho.index', compact('carrinho'));
-    }
-
-    public function adicionar(Request $request)
+    public function index()
     {
-        $tshirt_image_id = $request->input('tshirt_id');
-        $size = $request->input('size');
-        $color_code = $request->input('color_code');
-        $qty = $request->input('qty');
+        $carrinho = session('carrinho', []);
 
-        $cores = Colors::All();
-
-        return view('carrinho.adicionar', [
-            'tshirtId' => $tshirt_image_id,
-            'tamanho' => $size,
-            'cor' => $color_code,
-            'quantidade' => $qty,
-            'cores' => $cores,
-        ]);
+        return view('carrinho.index')
+            ->with('pageTitle', 'Carrinho de compras')
+            ->with('carrinho', $carrinho);
     }
 
-    public function update_carrinho(Request $request, Order_items $order_items){
+    public function adicionar(Request $request, Tshirt_images $tshirt_images)
+    {
+
+        $tshirtId = $request->input('tshirt_id');
+        $tamanho = $request->input('tamanho');
+        $cor = $request->input('color_code');
+        $color_name = Colors::where('code', $cor)->pluck('name')->first();
+        $quantidade = $request->input('quantidade');
+        $nome = Tshirt_images::where('id', $tshirtId)->pluck('name')->first();
+        $image_url = Tshirt_images::where('id', $tshirtId)->pluck('image_url')->first();
+
+        // Lógica para adicionar os dados ao carrinho
+        $carrinho = session('carrinho', []);
+        if (isset($carrinho[$tshirtId])) {
+            // Se a tshirt já estiver no carrinho, apenas atualiza a quantidade
+            $carrinho[$tshirtId]['qty'] += $quantidade;
+        } else {
+            // Se a tshirt ainda não estiver no carrinho, adiciona como um novo item
+            $carrinho[$tshirtId] = [
+                'qty' => $quantidade,
+                'nome' => $nome,
+                'preco' => 8,
+                'tamanho' => $tamanho,
+                'cor' => $color_name,
+                'cor_code' => $cor,
+                'imagem' => $image_url ? asset('storage/tshirt_images/' . $image_url) : asset('img/default_img.png'),
+            ];
+        }
+
+        session()->put('carrinho', $carrinho);
+
+        return back()
+            ->with('alert-msg', 'Item adicionado ao carrinho!')
+            ->with('alert-type', 'success');
+    }
+
+    public function update_carrinho(Request $request, Order_items $order_items)
+    {
         $carrinho = $request->session()->get('carrinho', []);
         $qty = ($carrinho[$order_items->id]['qty'] ?? 0);
         $qty += $request->input('qty');
-        if ($request -> input('qty') <= 0){
+        if ($request->input('qty') <= 0) {
             unset($carrinho[$order_items->id]);
             $msg = 'Item removido do carrinho!';
-        } elseif ($request -> input('qty') > 0){
+        } elseif ($request->input('qty') > 0) {
             $carrinho[$order_items->id] = [
                 'qty' => $qty,
                 'nome' => $order_items->name,
@@ -54,6 +79,56 @@ class CarrinhoController extends Controller
             ->with('alert-type', 'success');
     }
 
+    public function remover(Request $request, $tshirtId)
+    {
+        $carrinho = $request->session()->get('carrinho', []);
 
+        if (array_key_exists($tshirtId, $carrinho)) {
+            unset($carrinho[$tshirtId]);
+            $request->session()->put('carrinho', $carrinho);
+            return back()->with('alert-msg', 'Item removido do carrinho!')->with('alert-type', 'success');
+        }
 
+        return back()->with('alert-msg', 'O item não existe no carrinho!')->with('alert-type', 'warning');
+    }
+
+    public function confirmarCompra(Request $request)
+    {
+        // Obtenha os itens do carrinho da sessão
+        $carrinho = $request->session()->get('carrinho', []);
+        //dd($carrinho);
+
+        // Salve os itens do carrinho na tabela Order_items
+        foreach ($carrinho as $tshirtId => $item) {
+            // Criar uma nova instância do modelo Order
+            $order = new Orders();
+            // Defina os campos da
+            $order->status = 'pending'; // Defina o status desejado para a ordem
+            $order->customer_id = auth()->user()->id;
+            $order->date = now()->format('Y-m-d');
+            $order->total_price = $item['qty'] * $item['preco'];
+            $order->nif = 234567890;
+            $order->address = 'Rua do Carrinho, 123';
+            $order->payment_type = 'VISA';
+            $order->payment_ref = '1234567890';
+            $order->save();
+        }
+
+        foreach ($carrinho as $tshirtId => $item) {
+            $orderItem = new Order_items();
+            $orderItem->order_id = $order->id; // Defina o ID do pedido adequado
+            $orderItem->tshirt_image_id = $tshirtId;
+            $orderItem->color_code = $item['cor_code'];
+            $orderItem->size = $item['tamanho'];
+            $orderItem->qty = $item['qty'];
+            $orderItem->unit_price = $item['preco'];
+            $orderItem->sub_total = $item['qty'] * $item['preco'];
+            $orderItem->save();
+        }
+        // Limpe o carrinho da sessão
+        $request->session()->forget('carrinho');
+
+        // Redirecione para uma página de confirmação de compra ou outra página adequada
+        return redirect()->route('tshirt_images.index')->with('alert-msg', 'Compra confirmada com sucesso!');
+    }
 }

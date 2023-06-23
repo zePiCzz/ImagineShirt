@@ -51,10 +51,11 @@ Route::get('users/{user}',  [UsersController::class, 'show'])->name('users.show'
 
 //Carrinho
 Route::get('carrinho',  [CarrinhoController::class, 'index'])->name('carrinho.index');
-Route::post('carrinho/adicionar', [CarrinhoController::class, 'index'])->name('carrinho.adicionar');
+Route::post('carrinho/adicionar', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
 Route::delete('carrinho/{order_item}',  [CarrinhoController::class, 'remove'])->name('carrinho.remove');
-Route::post('carrinho' , [CarrinhoController::class, 'store'])->name('carrinho.store');
+Route::post('carrinho/confirmar-compra' , [CarrinhoController::class, 'confirmarCompra'])->name('carrinho.confirmar-compra');
 Route::delete('carrinho' , [CarrinhoController::class, 'destroy'])->name('carrinho.destroy');
+Route::post('carrinho/remover/{tshirtId}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
 
 
 

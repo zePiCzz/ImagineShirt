@@ -22,7 +22,7 @@
                 <tr>
                     <td>{{ $tshirt_image->name }}</td>
                     <td>{{ $tshirt_image->description }}</td>
-                    <td> <img
+                    <td> <img name="image_url" value="{{ $tshirt_image->image_url }}"
                             src="{{ $tshirt_image->image_url ? asset('storage/tshirt_images/' . $tshirt_image->image_url) : asset('img/default_img.png') }}"alt="Foto da TShirt"
                             style="width:80px;height:80px"> </td>
                     <td>
@@ -38,7 +38,7 @@
                             </select>
                             <select name="color_code" id="code">
                                 @foreach ($cores as $cor)
-                                    <option value="{{ $cor }}">{{ $cor->name }}</option>
+                                    <option value="{{ $cor->code }}">{{ $cor->name }}-{{ $cor->code }}</option>
                                 @endforeach
                             </select>
                             <label for="quantidade">Quantidade: <input type="number" name="quantidade" id="quantidade"></label>

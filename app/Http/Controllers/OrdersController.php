@@ -8,5 +8,4 @@ use App\Models\Orders;
 
 class OrdersController extends Controller
 {
-    //
 }

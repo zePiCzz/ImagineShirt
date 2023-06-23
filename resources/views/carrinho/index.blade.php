@@ -7,33 +7,47 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Imagem da TShirt</th>
-                    <th>Cor</th>
-                    <th>Tamanho</th>
-                    <th>Quantidade</th>
-                    <th>Preço da Unidade</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($carrinho as $row)
+        @if (count($carrinho) > 0)
+            <table class="table">
+                <thead>
                     <tr>
-                        <td> <img src="{{ $row['url_imagem'] ? asset('storage/tshirt_images/' . $row['url_imagem']) : asset('img/default_img.png') }}"alt="Foto da TShirt" style="width:80px;height:80px"> </td>
-                        @if ($row['color'] == null)
-                            <td>Cor não definida</td>
-                            @else
-                            <td>{{$row['color']}}</td>
-                        @endif
-                        <td>{{$row['size']}}</td>
-                        <td>{{$row['qty']}}</td>
-                        <td>{{$row['unit_price']}}</td>
-                        <td>{{$row['sub_total']}}</td>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Tamanho</th>
+                        <th>Cor</th>
+                        <th>Quantidade</th>
+                        <th>Imagem</th>
+                        <th></th>
+
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($carrinho as $tshirtId => $item)
+                        <tr>
+                            <td>{{ $item['nome'] }}</td>
+                            <td>{{ $item['preco'] }}</td>
+                            <td>{{ $item['tamanho'] }}</td>
+                            <td>{{ $item['cor'] }}</td>
+                            <td>{{ $item['qty'] }}</td>
+                            <td><img src="{{ $item['imagem'] }}" alt="Imagem" style="width:80px;height:80px"></td>
+                            <td>
+                                <form action="{{ route('carrinho.remover', $tshirtId) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Remover</button>
+                                </form>
+                                <form action="{{ route('carrinho.confirmar-compra') }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Confirmar Compra</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>O carrinho está vazio.</p>
+        @endif
     </div>
+</div>
+
 @endsection
