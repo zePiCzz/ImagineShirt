@@ -26,12 +26,18 @@ Route::get('/', function () {
     return view('layout');
 });
 
+//Rotas seguras
+Route::group(['middleware' => ['auth', 'A']], function () {
+    Route::get('users',  [UsersController::class, 'index'])->name('users.index');
+    //Customers
+    Route::get('customers',  [CustomersController::class, 'index'])->name('customers.index');
+    //Order_items
+    Route::get('order_items',  [Order_itemsController::class, 'index'])->name('order_items.index');
+});
 
-//Customers
-Route::get('customers',  [CustomersController::class, 'index'])->name('customers.index');
 
-//Order_items
-Route::get('order_items',  [Order_itemsController::class, 'index'])->name('order_items.index');
+
+
 
 //Tshirt_images
 Route::get('tshirt_images',  [Tshirt_imagesController::class, 'index'])->name('tshirt_images.index');
@@ -41,7 +47,7 @@ Route::get('/tshirt_images/search', [Tshirt_imagesController::class, 'search'])-
 Route::get('colors',  [ColorsController::class, 'index'])->name('colors.index');
 
 //Users
-Route::get('users',  [UsersController::class, 'index'])->name('users.index');
+
 Route::get('users/create',  [UsersController::class, 'create'])->name('users.create');
 Route::post('users/store',  [UsersController::class, 'store'])->name('users.store');
 Route::get('users/{user}/edit',  [UsersController::class, 'edit'])->name('users.edit');
@@ -53,11 +59,10 @@ Route::get('users/{user}',  [UsersController::class, 'show'])->name('users.show'
 Route::get('carrinho',  [CarrinhoController::class, 'index'])->name('carrinho.index');
 Route::post('carrinho/adicionar', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
 Route::delete('carrinho/{order_item}',  [CarrinhoController::class, 'remove'])->name('carrinho.remove');
-Route::post('carrinho/confirmar-compra' , [CarrinhoController::class, 'confirmarCompra'])->name('carrinho.confirmar-compra');
-Route::delete('carrinho' , [CarrinhoController::class, 'destroy'])->name('carrinho.destroy');
+Route::post('carrinho/confirmar-compra', [CarrinhoController::class, 'confirmarCompra'])->name('carrinho.confirmar-compra');
+Route::delete('carrinho', [CarrinhoController::class, 'destroy'])->name('carrinho.destroy');
 Route::post('carrinho/remover/{tshirtId}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
-
-
+Route::get('/formulario-informacoes-adicionais', [CarrinhoController::class, 'exibirFormularioInformacoesAdicionais'])->name('carrinho.exibirFormularioInformacoesAdicionais');
 
 
 Auth::routes();

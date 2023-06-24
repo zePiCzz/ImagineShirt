@@ -31,6 +31,7 @@
                             <input type="hidden" name="tshirt_id" value="{{ $tshirt_image->id }}">
                             <label for="tamanho">Tamanho:</label>
                             <select name="tamanho" id="tamanho">
+                                <option value="XS">XS</option>
                                 <option value="S">S</option>
                                 <option value="M">M</option>
                                 <option value="L">L</option>

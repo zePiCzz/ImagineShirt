@@ -11,6 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     @vite('resources/sass/app.scss')
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -27,7 +29,8 @@
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-cart-shopping" style="color: #969696;"></i></a>
+                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-cart-shopping"
+                        style="color: #969696;"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{{ route('carrinho.index') }}">Ver Carrinho</a></li>
                 </ul>
@@ -36,11 +39,11 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    @if (Auth::user()==null)
+                    @if (Auth::user() == null)
                         <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
                         <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
-                        @else
-                        <li><a class="dropdown-item" >{{Auth::user()->name}} </a></li>
+                    @else
+                        <li><a class="dropdown-item">{{ Auth::user()->name }} </a></li>
                         <li><a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">Profile </a></li>
                         <li><a class="dropdown-item" href="{{ route('users.edit', Auth::user()) }}">Edit </a></li>
                         <li>
@@ -57,6 +60,7 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
+                        @if(Auth::user() != null && Auth::user()->user_type == 'A')
                         <a class="nav-link" href="{{ route('users.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Users
@@ -69,6 +73,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Order Items
                         </a>
+                        @endif
                         <a class="nav-link" href="{{ route('tshirt_images.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             T-Shirts Items
@@ -135,5 +140,3 @@
 </body>
 
 </html>
-
-

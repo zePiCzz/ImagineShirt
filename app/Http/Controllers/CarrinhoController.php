@@ -7,6 +7,7 @@ use App\Models\Order_items;
 use App\Models\Colors;
 use App\Models\Tshirt_images;
 use App\Models\Orders;
+use App\Models\Prices;
 
 class CarrinhoController extends Controller
 {
@@ -22,6 +23,9 @@ class CarrinhoController extends Controller
     public function adicionar(Request $request, Tshirt_images $tshirt_images)
     {
 
+        //ir buscar a penas a primeira linha da tabela prices
+
+        $prices = Prices::first();
         $tshirtId = $request->input('tshirt_id');
         $tamanho = $request->input('tamanho');
         $cor = $request->input('color_code');
@@ -29,6 +33,12 @@ class CarrinhoController extends Controller
         $quantidade = $request->input('quantidade');
         $nome = Tshirt_images::where('id', $tshirtId)->pluck('name')->first();
         $image_url = Tshirt_images::where('id', $tshirtId)->pluck('image_url')->first();
+        if($quantidade >= 5){
+            $sub_total = $prices->unit_price_catalog_discount * $quantidade;
+        }else{
+            $sub_total = $prices->unit_price_catalog * $quantidade;
+        }
+
 
         // Lógica para adicionar os dados ao carrinho
         $carrinho = session('carrinho', []);
@@ -40,7 +50,7 @@ class CarrinhoController extends Controller
             $carrinho[$tshirtId] = [
                 'qty' => $quantidade,
                 'nome' => $nome,
-                'preco' => 8,
+                'preco' => $sub_total,
                 'tamanho' => $tamanho,
                 'cor' => $color_name,
                 'cor_code' => $cor,
@@ -97,7 +107,6 @@ class CarrinhoController extends Controller
         // Obtenha os itens do carrinho da sessão
         $carrinho = $request->session()->get('carrinho', []);
         //dd($carrinho);
-
         // Salve os itens do carrinho na tabela Order_items
         foreach ($carrinho as $tshirtId => $item) {
             // Criar uma nova instância do modelo Order
@@ -107,10 +116,10 @@ class CarrinhoController extends Controller
             $order->customer_id = auth()->user()->id;
             $order->date = now()->format('Y-m-d');
             $order->total_price = $item['qty'] * $item['preco'];
-            $order->nif = 234567890;
-            $order->address = 'Rua do Carrinho, 123';
-            $order->payment_type = 'VISA';
-            $order->payment_ref = '1234567890';
+            $order->nif = request()->nif;
+            $order->address = request()->address;
+            $order->payment_type = request()->payment_type;
+            $order->payment_ref = request()->payment_ref;
             $order->save();
         }
 
@@ -130,5 +139,13 @@ class CarrinhoController extends Controller
 
         // Redirecione para uma página de confirmação de compra ou outra página adequada
         return redirect()->route('tshirt_images.index')->with('alert-msg', 'Compra confirmada com sucesso!');
+    }
+
+    public function exibirFormularioInformacoesAdicionais(Request $request)
+    {
+        // Obtenha os itens do carrinho da sessão
+        $carrinho = session('carrinho', []);
+
+        return view('carrinho.confirmar-compra', compact('carrinho'));
     }
 }
