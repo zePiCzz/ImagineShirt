@@ -1,19 +1,19 @@
 @extends('layout')
-@section('header-title','Customers')
+@section('titulo','Colors')
 @section('main')
 
 <table class="table">
     <thead>
         <tr>
-            <th>Código</th>
             <th>Nome</th>
+            <th>Código</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($colors as $color)
             <tr>
-                <td>{{$color->code}}</td>
                 <td>{{$color->name}}</td>
+                <td>{{$color->code}}</td>
             </tr>
         @endforeach
     </tbody>

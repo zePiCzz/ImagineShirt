@@ -1,5 +1,5 @@
 @extends('layout')
-@section('header-title', 'Imagens das TShirts')
+@section('titulo', 'Imagens das TShirts')
 @section('main')
 
     <table class="table">

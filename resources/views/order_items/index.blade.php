@@ -1,5 +1,5 @@
 @extends('layout')
-@section('header-title','Order Items')
+@section('titulo','Order Items')
 @section('main')
 
     <table class="table">

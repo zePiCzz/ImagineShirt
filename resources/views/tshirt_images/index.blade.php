@@ -1,15 +1,9 @@
 @extends('layout')
-@section('header-title', 'Imagens das TShirts')
+@section('titulo', 'Imagens das TShirts')
 @section('main')
 
     <table class="table">
         <thead>
-            <form action="{{ route('tshirt_images.search') }}" method="GET">
-                <input type="text" name="category_id" placeholder="Category" value="{{ request('category') }}">
-                <input type="text" name="name" placeholder="Name" value="{{ request('name') }}">
-                <input type="text" name="description" placeholder="Description" value="{{ request('description') }}">
-                <button type="submit">Search</button>
-            </form>
             <tr>
                 <th>Nome</th>
                 <th>Descrição</th>
@@ -39,11 +33,12 @@
                             </select>
                             <select name="color_code" id="code">
                                 @foreach ($cores as $cor)
-                                    <option value="{{ $cor->code }}">{{ $cor->name }}-{{ $cor->code }}</option>
+                                    <option value="{{ $cor->code }}">{{ $cor->name }}</option>
                                 @endforeach
                             </select>
-                            <label for="quantidade">Quantidade: <input type="number" name="quantidade" id="quantidade"></label>
-                            <button type="submit">Adicionar ao Carrinho</button>
+                            <label for="quantidade">Quantidade: <input type="number" name="quantidade"
+                                    id="quantidade"></label>
+                            <button class="btn btn-success" type="submit"><i class="fa-solid fa-cart-plus"></i></button>
                         </form>
                     </td>
                 </tr>

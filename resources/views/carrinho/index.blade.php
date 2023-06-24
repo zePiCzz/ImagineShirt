@@ -1,5 +1,5 @@
 @extends('layout')
-@section('header-title', 'Carrinho de Compras')
+@section('titulo', 'Carrinho de Compras')
 @section('main')
 
 <div>
@@ -8,6 +8,10 @@
 <div class="row">
     <div class="col-md-12">
         @if (count($carrinho) > 0)
+        <form action="{{ route('carrinho.exibirFormularioInformacoesAdicionais') }}" method="GET">
+            @csrf
+            <button class="btn btn-success" type="submit">Confirmar Compra</button>
+        </form>
             <table class="table">
                 <thead>
                     <tr>
@@ -33,11 +37,7 @@
                             <td>
                                 <form action="{{ route('carrinho.remover', $tshirtId) }}" method="POST">
                                     @csrf
-                                    <button type="submit">Remover</button>
-                                </form>
-                                <form action="{{ route('carrinho.exibirFormularioInformacoesAdicionais') }}" method="GET">
-                                    @csrf
-                                    <button type="submit">Confirmar Compra</button>
+                                    <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

@@ -1,35 +1,42 @@
-// Fonts
-// @import url('https://fonts.bunny.net/css?family=Nunito');
-// // Variables
-// @import 'variables';
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
 // SBAdmin Template
 @import 'sb-admin';
 
-table,
-th,
-td {
- border: 1px solid black;
- border-collapse: collapse;
+table th.button-icon-col, table td.button-icon-col {
+    max-width: 52px;
+    width: 52px;
+    padding-left: 8px;
+    padding-right: 0px;
 }
-html {
- height: 100%;
+
+.form-control[disabled] {
+    background-color: white !important;
+    border-style: dashed;
 }
-body {
- height: 100%;
- display: flex;
+
+textarea.form-control{
+    resize: none !important;
+    height: 3.625rem !important;
 }
-body>nav {
- min-width: 150px;
- background-color: lightgray;
- margin-right: 20px;
+
+textarea.form-control.height-xs {
+    height: 3.625rem !important;
 }
-body>nav ul {
- list-style-type: none;
- padding-left: 15px;
- margin-bottom: 10px;
+
+textarea.form-control.height-sm{
+    height: 4.4rem !important;
 }
-body>nav li {
- margin-bottom: 10px;
+
+textarea.form-control.height-md{
+    height: 6.9rem !important;
+}
+
+textarea.form-control.height-lg{
+    height: 11.9rem !important;
+}
+
+textarea.form-control.height-xl{
+    height: 17.0rem !important;
 }

@@ -18,42 +18,63 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="/">Dashboard</a>
+        <a class="navbar-brand ps-3" href="\">Dashboard</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        </form>
+
         <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-cart-shopping"
-                        style="color: #969696;"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{{ route('carrinho.index') }}">Ver Carrinho</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    @if (Auth::user() == null)
-                        <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
-                        <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
-                    @else
-                        <li><a class="dropdown-item">{{ Auth::user()->name }} </a></li>
-                        <li><a class="dropdown-item" href="{{ route('users.show', Auth::user()) }}">Profile </a></li>
-                        <li><a class="dropdown-item" href="{{ route('users.edit', Auth::user()) }}">Edit </a></li>
+        @guest
+            <ul class="navbar-nav ms-auto me-1 me-lg-3">
+                @if (Route::has('login'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">
+                            {{ __('Login') }}
+                        </a>
+                    </li>
+                @endif
+                @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">
+                            {{ __('Register') }}
+                        </a>
+                    </li>
+                @endif
+            </ul>
+        @else
+            <div class="ms-auto me-0 me-md-2 my-2 my-md-0 navbar-text">
+                {{ Auth::user()->name }}
+            </div>
+            <!-- Navbar-->
+            <ul class="navbar-nav me-1 me-lg-3">
+                <li class="nav-item dropdown" width="45">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user fa-fw"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                        <li><a class="dropdown-item" href="{{ route('users.show', ['user' => Auth::user()])}}">Perfil</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('carrinho.index') }}">Carrinho</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
-                        <li><a class="dropdown-item" href="{{ route('home') }}">Logout</a></li>
-                    @endif
-                </ul>
-            </li>
-        </ul>
+                        <li>
+                            <a class="dropdown-item"
+                                onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                Sair
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        @endguest
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -120,14 +141,15 @@
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <div class="main">
-                <header>
-                    <h1>@yield('header-title')</h1>
-                </header>
-                <div class="content">
-                    @yield('main')
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">@yield('titulo', 'Imagine Shirt')</h1>
+                    @yield('subtitulo')
+                    <div class="mt-4">
+                        @yield('main')
+                    </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
     @vite('resources/js/app.js')

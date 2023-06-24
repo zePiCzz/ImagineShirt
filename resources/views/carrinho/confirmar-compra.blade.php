@@ -1,7 +1,14 @@
 @extends('layout')
-@section('header-title', 'Confirmar Compra')
-@section('main')
+@section('titulo', 'Confirmar Compra')
 
+@section('subtitulo')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('carrinho.index') }}">Carrinho</a></li>
+        <li class="breadcrumb-item active">Confirmar Compra</li>
+    </ol>
+@endsection
+
+@section('main')
 <div>
     <h3>Confirmação de Compra</h3>
 </div>
@@ -52,7 +59,7 @@
 
                 <!-- Outros campos do formulário -->
 
-                <button type="submit" class="btn btn-primary">Confirmar Compra</button>
+                <button type="submit" class="btn btn-success">Confirmar Compra</button>
             </form>
 
         @else

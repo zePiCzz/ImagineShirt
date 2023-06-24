@@ -10,6 +10,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarrinhoController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,7 @@ use App\Http\Controllers\CarrinhoController;
 |
 */
 
-Route::get('/', function () {
-    return view('layout');
-});
+Route::view('/', 'home')->name('root');
 
 //Rotas seguras
 Route::group(['middleware' => ['auth', 'A']], function () {
@@ -34,10 +33,6 @@ Route::group(['middleware' => ['auth', 'A']], function () {
     //Order_items
     Route::get('order_items',  [Order_itemsController::class, 'index'])->name('order_items.index');
 });
-
-
-
-
 
 //Tshirt_images
 Route::get('tshirt_images',  [Tshirt_imagesController::class, 'index'])->name('tshirt_images.index');

@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order_items;
+use Illuminate\View\View;
 
 
 class Order_itemsController extends Controller
 {
-    public function index()
+    public function index(Request $request): View
     {
         $order_items = Order_items::with('tshirtImage')->with('orders')->with('colors')->paginate(10);
-
 
         foreach ($order_items as $order_item) {
             $url_imagem = $order_item->tshirtImage->image_url;
@@ -31,6 +31,6 @@ class Order_itemsController extends Controller
         }
 
         //enviar o $url_imagem para a view
-        return view('order_items.index')->with('order_items', $order_items);
+        return view('order_items.index', ['order_items' => $order_items]);
     }
 }
