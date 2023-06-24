@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Tshirt_images;
 use App\Models\Colors;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tshirt_imagesPost;
 use Illuminate\Support\Facades\Storage;
@@ -15,8 +16,9 @@ class Tshirt_imagesController extends Controller
     {
         $tshirt_image = Tshirt_images::paginate(5);
         $cores = Colors::all();
+        $categories = Categories::all();
         //dd($tshirt_image);
-        return view('tshirt_images.index')->with('tshirt_images', $tshirt_image)->with('cores',$cores);
+        return view('tshirt_images.index')->with('tshirt_images', $tshirt_image)->with('cores',$cores)->with('categories',$categories);
     }
 
     public function update(Tshirt_imagesPost $request, Tshirt_images $tshirt_image)
@@ -41,7 +43,7 @@ class Tshirt_imagesController extends Controller
 
     public function search(Request $request)
     {
-        $category_id = $request->input('category_id');
+        $category_id = $request->input('category_name');
         $name = $request->input('name');
         $description = $request->input('description');
 

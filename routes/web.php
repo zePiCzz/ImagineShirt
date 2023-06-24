@@ -40,7 +40,6 @@ Route::get('/tshirt_images/search', [Tshirt_imagesController::class, 'search'])-
 
 //Colors
 Route::get('colors',  [ColorsController::class, 'index'])->name('colors.index');
-
 //Users
 
 Route::get('users/create',  [UsersController::class, 'create'])->name('users.create');

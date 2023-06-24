@@ -20,80 +20,85 @@
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="\">Dashboard</a>
         <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <button class="btn
+            btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i></button>
 
-        <!-- Navbar-->
-        @guest
-            <ul class="navbar-nav ms-auto me-1 me-lg-3">
-                @if (Route::has('login'))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">
-                            {{ __('Login') }}
-                        </a>
-                    </li>
-                @endif
-                @if (Route::has('register'))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">
-                            {{ __('Register') }}
-                        </a>
-                    </li>
-                @endif
-            </ul>
-        @else
-            <div class="ms-auto me-0 me-md-2 my-2 my-md-0 navbar-text">
-                {{ Auth::user()->name }}
-            </div>
             <!-- Navbar-->
-            <ul class="navbar-nav me-1 me-lg-3">
-                <li class="nav-item dropdown" width="45">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user fa-fw"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
-                        <li><a class="dropdown-item" href="{{ route('users.show', ['user' => Auth::user()])}}">Perfil</a>
-                        </li>
-                        <li><a class="dropdown-item" href="{{ route('carrinho.index') }}">Carrinho</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li>
-                            <a class="dropdown-item"
-                                onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                                Sair
+            @guest
+                <ul class="navbar-nav ms-auto me-1 me-lg-3">
+                    @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">
+                                {{ __('Login') }}
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
                         </li>
-                    </ul>
-                </li>
-            </ul>
-        @endguest
+                    @endif
+                    @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">
+                                {{ __('Register') }}
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            @else
+                <div class="ms-auto me-0 me-md-2 my-2 my-md-0 navbar-text">
+                    {{ Auth::user()->name }}
+                </div>
+                <!-- Navbar-->
+                <ul class="navbar-nav me-1 me-lg-3">
+                    <li class="nav-item dropdown" width="45">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user fa-fw"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            @if (Auth::user()->user_type == 'E')
+                            @else
+                                <li><a class="dropdown-item"
+                                        href="{{ route('users.show', ['user' => Auth::user()]) }}">Perfil</a>
+                                </li>
+                            @endif
+
+                            <li><a class="dropdown-item" href="{{ route('carrinho.index') }}">Carrinho</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                    onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                    Sair
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            @endguest
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        @if(Auth::user() != null && Auth::user()->user_type == 'A')
-                        <a class="nav-link" href="{{ route('users.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Users
-                        </a>
-                        <a class="nav-link" href="{{ route('customers.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Customers
-                        </a>
-                        <a class="nav-link" href="{{ route('order_items.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Order Items
-                        </a>
+                        @if (Auth::user() != null && Auth::user()->user_type == 'A')
+                            <a class="nav-link" href="{{ route('users.index') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Users
+                            </a>
+                            <a class="nav-link" href="{{ route('customers.index') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Customers
+                            </a>
+                            <a class="nav-link" href="{{ route('order_items.index') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Order Items
+                            </a>
                         @endif
                         <a class="nav-link" href="{{ route('tshirt_images.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>

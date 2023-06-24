@@ -4,6 +4,20 @@
 
     <table class="table">
         <thead>
+            <form action="{{ route('tshirt_images.search') }}" method="GET">
+                <select name="category_id" id="category_id">
+                    <option value="">Categories</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ request('category_id') == $category->name ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <input type="text" name="name" placeholder="Name" value="{{ request('name') }}">
+                <input type="text" name="description" placeholder="Description" value="{{ request('description') }}">
+                <button type="submit">Search</button>
+            </form>
             <tr>
                 <th>Nome</th>
                 <th>Descrição</th>
